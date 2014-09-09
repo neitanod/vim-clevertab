@@ -23,6 +23,7 @@ This piece of code is a derivation of the function suggested by:
 in [StackOverflow.com] 
 (http://stackoverflow.com/questions/2136801/vim-keyword-complete-when-omni-complete-returns-nothing) 
 
+
 Installation
 ============
 
@@ -42,6 +43,48 @@ or
 or 
     
     call CleverTab#NeoCompleteFirst()
+
+or define your own chain:
+
+    inoremap <silent><tab> <c-r>=CleverTab#Complete('start')<cr>
+                          \<c-r>=CleverTab#Complete('tab')<cr>
+                          \<c-r>=CleverTab#Complete('ultisnips')<cr>
+                          \<c-r>=CleverTab#Complete('keyword')<cr>
+                          \<c-r>=CleverTab#Complete('neocomplete')<cr>
+                          \<c-r>=CleverTab#Complete('omni')<cr>
+                          \<c-r>=CleverTab#Complete('stop')<cr>
+    inoremap <silent><s-tab> <c-r>=CleverTab#Complete('prev')<cr>
+
+You must always start with CleverTab#Complete('start'), as it takes care
+of the bootstrap of the chain.
+
+Likewise, you must always end with CleverTab#Complete('end') wich takes
+care of the cases where Tab means "next entry" on a suggestions menu.
+
+Between those two, you can define which functions and plugins to call, 
+and in wich order.  Each time that a function finds something to do 
+the chain is broken and the rest of the calls are ignored.
+
+  - tab
+      Issues a Tab press and breaks the call chain, but only if the cursor 
+      is at the beginning of a line.  Only whitespace is allowed at the
+      left of the cursor. Otherwise this call is skipped.
+  - ultisnips
+      Starts UltiSnips plugin.  If the keyword at the left of the cursor
+      matches a snippet, it gets inserted and the call chain get broken.
+      If UltiSnips fails to match the keyword to a snippet, control is 
+      passed to the next call.
+  - keyword
+      Issues a native <C-P> keypress.  This starts the Keyword Completion.
+      If a match is found and inserted into the buffer, or several matches 
+      are found and the pop up menu (PUM) is displayed, the call chain gets
+      broken.  If no match is found control is passed to the next call.
+  - omni
+      Just like the previous option, but instead of the native Keyword 
+      Completion function, the Omni Function is used.
+  - neocomplete
+      Works like the keyword and omni calls, but this one starts the 
+      NeoComplete plugin to search for matches.  
 
 
 Usage
