@@ -1,14 +1,13 @@
 vim-clevertab
 =============
 
-Extremely simple replacement for Supertab that DOES do what I need.
+Tiny replacement for Supertab that DOES do what I need.
 
-First of all, it verifies that you don't really wanted just a tab.
-If you're on a blank line or at the beginning of a line, it just 
-issues a TAB.
-Otherwise, it calls UltiSnips.  If no snippet was found, call omni 
-complete or keyword complete (the one you defined to be called first) 
-and if there are no matches, it calls the other one.
+First of all, if you're on a blank line or at the beginning of a 
+line, it just issues a TAB.
+Otherwise, it calls UltiSnips. If no snippet was found, it calls 
+omni complete or keyword complete (the one you defined to be called 
+first) and if there are no matches, it calls the other one.
 
 If you are already browsing a completion candidates list, tab will jump
 to the next one and shift-tab to the previos one.
