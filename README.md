@@ -36,4 +36,4 @@ or
 Usage
 =====
 
-While in insert mode, write some code and then just press <Tab>.
+While in insert mode, write some code and then just press TAB.
