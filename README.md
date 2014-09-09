@@ -13,9 +13,10 @@ and if there are no matches, it calls the other one.
 If you are already browsing a completion candidates list, tab will jump
 to the next one and shift-tab to the previos one.
 
-I did this because I couldn't make SuperTab to detect if a completion
-returned something or not, and I really needed to fall from a completion
-function back to the other.  Omni to Keyword or Keyword to Omni.
+I did this because SuperTab did not detect if a completion returned 
+something or not, and I really needed to fall from a completion
+function back to the other (Omni to Keyword or Keyword to Omni) in 
+some cases.
 
 
 Installation
