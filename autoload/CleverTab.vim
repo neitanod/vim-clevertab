@@ -5,15 +5,17 @@
 
 function! CleverTab#Start()
 
-  augroup CleverTabAu
-    autocmd CursorMovedI * if pumvisible() == 0|pclose|autocmd! CleverTabAu CursorMovedI *|autocmd! CleverTabAu InsertLeave *|endif
-    autocmd InsertLeave * if pumvisible() == 0|pclose|autocmd! CleverTabAu CursorMovedI *|autocmd! CleverTabAu InsertLeave *|endif
-  augroup END
+  if has("autocmd")
+    augroup CleverTabAu
+      autocmd CursorMovedI * if pumvisible() == 0|pclose|autocmd! CleverTabAu CursorMovedI *|autocmd! CleverTabAu InsertLeave *|endif
+      autocmd InsertLeave * if pumvisible() == 0|pclose|autocmd! CleverTabAu CursorMovedI *|autocmd! CleverTabAu InsertLeave *|endif
+    augroup END
+  endif
 
   if !exists("g:CleverTab#next_step_direction")
     let g:CleverTab#next_step_direction="P"
   endif
-    echom virtcol('.')
+
   let g:CleverTab#last_cursor_col=virtcol('.')
   let g:CleverTab#cursor_moved=0
   let g:CleverTab#eat_next=0
@@ -31,17 +33,22 @@ function! CleverTab#Complete(type)
             return "\<TAB>"
         endif
     elseif a:type == 'omni' && !pumvisible() && !g:CleverTab#cursor_moved && !g:CleverTab#stop
-        " if !&omnifunc
+        if !&omnifunc
             let g:CleverTab#next_step_direction="N"
             echom "Omni Complete"
             let g:CleverTab#eat_next=1
             return "\<C-X>\<C-O>"
-        " endif
+        endif
     elseif a:type == 'keyword' && !pumvisible() && !g:CleverTab#cursor_moved && !g:CleverTab#stop
         let g:CleverTab#next_step_direction="P"
         echom "Keyword Complete"
         let g:CleverTab#eat_next=1
         return "\<C-X>\<C-P>"
+    elseif a:type == 'neocomplete' && !pumvisible() && !g:CleverTab#cursor_moved && !g:CleverTab#stop
+        let g:CleverTab#next_step_direction="N"
+        echom "NeoComplete"
+        let g:CleverTab#eat_next=1
+        return neocomplete#start_manual_complete()
     elseif a:type == 'ultisnips' && !pumvisible() && !g:CleverTab#cursor_moved && !g:CleverTab#stop
       let g:ulti_x = UltiSnips#ExpandSnippet()
       if g:ulti_expand_res
@@ -78,6 +85,11 @@ endfunction
 
 function! CleverTab#KeywordFirst()
   inoremap <silent><tab> <c-r>=CleverTab#Start()<cr><c-r>=CleverTab#Complete('tab')<cr><c-r>=CleverTab#Complete('ultisnips')<cr><c-r>=CleverTab#Complete('keyword')<cr><c-r>=CleverTab#Complete('omni')<cr><c-r>=CleverTab#Complete('next')<cr>
+  inoremap <silent><s-tab> <c-r>=CleverTab#Complete('prev')<cr>
+endfunction
+
+function! CleverTab#NeoCompleteFirst()
+  inoremap <silent><tab> <c-r>=CleverTab#Start()<cr><c-r>=CleverTab#Complete('tab')<cr><c-r>=CleverTab#Complete('ultisnips')<cr><c-r>=CleverTab#Complete('neocomplete')<cr><c-r>=CleverTab#Complete('keyword')<cr><c-r>=CleverTab#Complete('omni')<cr><c-r>=CleverTab#Complete('next')<cr>
   inoremap <silent><s-tab> <c-r>=CleverTab#Complete('prev')<cr>
 endfunction
 
