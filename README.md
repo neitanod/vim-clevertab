@@ -21,6 +21,8 @@ some cases.
 Installation
 ============
 
+With Pathogen:
+
     cd ~/.vim/bundle/
     git clone https://github.com/neitanod/vim-clevertab.git
     
