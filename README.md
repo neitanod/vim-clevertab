@@ -88,7 +88,9 @@ the chain is broken and the rest of the calls are ignored.
   - omni
 
     Just like the previous option, but instead of the native Keyword 
-    Completion function, the Omni Function is used.
+    Completion function, the Omni Function is used by issuing a `<C-X><C-O>`
+    key sequence press.
+
 
   - neocomplete
 

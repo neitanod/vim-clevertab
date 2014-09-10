@@ -41,7 +41,7 @@ function! CleverTab#Complete(type)
     let g:CleverTab#next_step_direction="P"
     echom "Keyword Complete"
     let g:CleverTab#eat_next=1
-    return "\<C-X>\<C-P>"
+    return "\<C-P>"
   elseif a:type == 'neocomplete' && !pumvisible() && !g:CleverTab#cursor_moved && !g:CleverTab#stop
     let g:CleverTab#next_step_direction="N"
     echom "NeoComplete"
