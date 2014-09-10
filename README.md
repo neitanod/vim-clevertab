@@ -80,7 +80,7 @@ the chain is broken and the rest of the calls are ignored.
 
   - keyword
 
-    Issues a native <C-P> keypress.  This starts the Keyword Completion.
+    Issues a native `<C-P>` keypress.  This starts the Keyword Completion.
     If a match is found and inserted into the buffer, or several matches 
     are found and the pop up menu (PUM) is displayed, the call chain gets
     broken.  If no match is found control is passed to the next call.
