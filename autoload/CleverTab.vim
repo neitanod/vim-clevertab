@@ -9,8 +9,8 @@ function! CleverTab#Complete(type)
   if a:type == 'start'
     if has("autocmd")
       augroup CleverTabAu
-        autocmd CursorMovedI * if pumvisible() == 0|pclose|autocmd! CleverTabAu CursorMovedI *|autocmd! CleverTabAu InsertLeave *|endif
-        autocmd InsertLeave * if pumvisible() == 0|pclose|autocmd! CleverTabAu CursorMovedI *|autocmd! CleverTabAu InsertLeave *|endif
+        autocmd CursorMovedI *  if pumvisible() == 0 && g:CleverTab#autocmd_set|let g:CleverTab#autocmd_set = 0|pclose|autocmd! CleverTabAu CursorMovedI *|autocmd! CleverTabAu InsertLeave *|endif
+        autocmd InsertLeave *  if pumvisible() == 0 && g:CleverTab#autocmd_set|let g:CleverTab#autocmd_set = 0|pclose|autocmd! CleverTabAu CursorMovedI *|autocmd! CleverTabAu InsertLeave *|endif
       augroup END
     endif
     if !exists("g:CleverTab#next_step_direction")
@@ -19,6 +19,7 @@ function! CleverTab#Complete(type)
     let g:CleverTab#last_cursor_col=virtcol('.')
     let g:CleverTab#cursor_moved=0
     let g:CleverTab#eat_next=0
+    let g:CleverTab#autocmd_set=1
     let g:CleverTab#stop=0
     return ""
   endif
