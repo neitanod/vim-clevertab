@@ -32,7 +32,7 @@ With Pathogen:
     cd ~/.vim/bundle/
     git clone https://github.com/neitanod/vim-clevertab.git
     
-Edit your .vimrc and add this line:
+Edit your .vimrc and then load one of the predefined chains, like this:
    
     call CleverTab#KeywordFirst()
 
@@ -65,6 +65,8 @@ Between those two, you can define which functions and plugins to call,
 and in wich order.  Each time that a function finds something to do 
 the chain is broken and the rest of the calls are ignored.
 
+Options:
+
   - tab
 
     Issues a Tab press and breaks the call chain, but only if the cursor 
@@ -91,11 +93,15 @@ the chain is broken and the rest of the calls are ignored.
     Completion function, the Omni Function is used by issuing a `<C-X><C-O>`
     key sequence press.
 
-
   - neocomplete
 
     Works like the keyword and omni calls, but this one starts the 
     NeoComplete plugin to search for matches.  
+
+If you use a completion plugin other than NeoComplete and/or a snippets 
+plugin other than UltiSnips, I encourage you to hack into this plugin and 
+add them yourself!  Each one is just an elseif block with just one to five 
+lines of code in it.  Then send me a pull request or just mail it to me.
 
 
 Usage
