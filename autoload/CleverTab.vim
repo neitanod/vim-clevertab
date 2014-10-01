@@ -9,8 +9,8 @@ function! CleverTab#Complete(type)
   if a:type == 'start'
     if has("autocmd")
       augroup CleverTabAu
-        autocmd CursorMovedI *  if pumvisible() == 0 && g:CleverTab#autocmd_set|let g:CleverTab#autocmd_set = 0|pclose|autocmd! CleverTabAu CursorMovedI *|autocmd! CleverTabAu InsertLeave *|endif
-        autocmd InsertLeave *  if pumvisible() == 0 && g:CleverTab#autocmd_set|let g:CleverTab#autocmd_set = 0|pclose|autocmd! CleverTabAu CursorMovedI *|autocmd! CleverTabAu InsertLeave *|endif
+        autocmd CursorMovedI *  if pumvisible() == 0 && g:CleverTab#autocmd_set|let g:CleverTab#autocmd_set = 0|pclose|call CleverTab#ClearAutocmds()|endif
+        autocmd InsertLeave *  if pumvisible() == 0 && g:CleverTab#autocmd_set|let g:CleverTab#autocmd_set = 0|pclose|call CleverTab#ClearAutocmds()|endif
       augroup END
     endif
     if !exists("g:CleverTab#next_step_direction")
@@ -47,7 +47,7 @@ function! CleverTab#Complete(type)
     echom "NeoComplete"
     let g:CleverTab#eat_next=1
     return neocomplete#start_manual_complete()
-  elseif a:type == 'ultisnips' && !pumvisible() && !g:CleverTab#cursor_moved && !g:CleverTab#stop
+  elseif a:type == 'ultisnips' && !g:CleverTab#cursor_moved && !g:CleverTab#stop
     let g:ulti_x = UltiSnips#ExpandSnippet()
     if g:ulti_expand_res
       let g:CleverTab#stop=1
@@ -55,7 +55,16 @@ function! CleverTab#Complete(type)
       return g:ulti_x
     endif
     return ""
-  elseif a:type == "stop" || a:type == "next"
+  elseif a:type == "forcedtab" && !g:CleverTab#stop
+    let g:CleverTab#stop=1
+    return "\<Tab>"
+  elseif a:type == "stop" 
+    if g:CleverTab#stop || g:CleverTab#eat_next==1
+      let g:CleverTab#stop=0
+      let g:CleverTab#eat_next=0
+      return ""
+    endif
+  elseif a:type == "next"
     if g:CleverTab#stop || g:CleverTab#eat_next==1
       let g:CleverTab#stop=0
       let g:CleverTab#eat_next=0
@@ -106,4 +115,9 @@ function! CleverTab#NeoCompleteFirst()
                         \<c-r>=CleverTab#Complete('omni')<cr>
                         \<c-r>=CleverTab#Complete('stop')<cr>
   inoremap <silent><s-tab> <c-r>=CleverTab#Complete('prev')<cr>
+endfunction
+
+function! CleverTab#ClearAutocmds()
+  autocmd! CleverTabAu InsertLeave *
+  autocmd! CleverTabAu CursorMovedI *
 endfunction
