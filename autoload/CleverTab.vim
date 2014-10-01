@@ -25,6 +25,7 @@ function! CleverTab#Complete(type)
   endif
   let g:CleverTab#cursor_moved=g:CleverTab#last_cursor_col!=virtcol('.')
   if a:type == 'tab'
+    let g:CleverTab#next_step_direction="0"
     if strpart( getline('.'), 0, col('.')-1 ) !~ '\k' " =~ '^\s*$'
       let g:CleverTab#stop=1
       echom "Regular Tab"
@@ -48,6 +49,7 @@ function! CleverTab#Complete(type)
     let g:CleverTab#eat_next=1
     return neocomplete#start_manual_complete()
   elseif a:type == 'ultisnips' && !g:CleverTab#cursor_moved && !g:CleverTab#stop
+    let g:CleverTab#next_step_direction="0"
     let g:ulti_x = UltiSnips#ExpandSnippet()
     if g:ulti_expand_res
       let g:CleverTab#stop=1
@@ -56,6 +58,7 @@ function! CleverTab#Complete(type)
     endif
     return ""
   elseif a:type == "forcedtab" && !g:CleverTab#stop
+    let g:CleverTab#next_step_direction="0"
     let g:CleverTab#stop=1
     return "\<Tab>"
   elseif a:type == "stop" || a:type == "next"
@@ -72,7 +75,7 @@ function! CleverTab#Complete(type)
   elseif a:type == "prev"
     if g:CleverTab#next_step_direction=="P"
       return "\<C-N>"
-    else 
+    elseif g:CleverTab#next_step_direction=="N"
       return "\<C-P>"
     endif
   endif
