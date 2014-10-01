@@ -14,7 +14,7 @@ function! CleverTab#Complete(type)
       augroup END
     endif
     if !exists("g:CleverTab#next_step_direction")
-      let g:CleverTab#next_step_direction="P"
+      let g:CleverTab#next_step_direction="0"
     endif
     let g:CleverTab#last_cursor_col=virtcol('.')
     let g:CleverTab#cursor_moved=0
@@ -58,13 +58,7 @@ function! CleverTab#Complete(type)
   elseif a:type == "forcedtab" && !g:CleverTab#stop
     let g:CleverTab#stop=1
     return "\<Tab>"
-  elseif a:type == "stop" 
-    if g:CleverTab#stop || g:CleverTab#eat_next==1
-      let g:CleverTab#stop=0
-      let g:CleverTab#eat_next=0
-      return ""
-    endif
-  elseif a:type == "next"
+  elseif a:type == "stop" || a:type == "next"
     if g:CleverTab#stop || g:CleverTab#eat_next==1
       let g:CleverTab#stop=0
       let g:CleverTab#eat_next=0
@@ -72,7 +66,7 @@ function! CleverTab#Complete(type)
     endif
     if g:CleverTab#next_step_direction=="P"
       return "\<C-P>"
-    else 
+    elseif g:CleverTab#next_step_direction=="N"
       return "\<C-N>"
     endif
   elseif a:type == "prev"
