@@ -83,7 +83,6 @@ function! CleverTab#Complete(type)
       let g:CleverTab#eat_next=0
       return ""
     endif
-    echom g:CleverTab#next_step_direction 
     if g:CleverTab#next_step_direction=="P"
       return "\<C-P>"
     elseif g:CleverTab#next_step_direction=="N"
