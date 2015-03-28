@@ -45,6 +45,15 @@ function! CleverTab#Complete(type)
     endif
 
 
+  elseif a:type == 'user' && !pumvisible() && !g:CleverTab#cursor_moved && !g:CleverTab#stop
+    if &completefunc != ''
+      echom "User Complete"
+      let g:CleverTab#next_step_direction="N"
+      let g:CleverTab#eat_next=1
+      return "\<C-X>\<C-U>"
+    endif
+
+
   elseif a:type == 'keyword' && !pumvisible() && !g:CleverTab#cursor_moved && !g:CleverTab#stop
     echom "Keyword Complete"
     let g:CleverTab#next_step_direction="P"
