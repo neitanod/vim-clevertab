@@ -37,7 +37,7 @@ function! CleverTab#Complete(type)
 
 
   elseif a:type == 'omni' && !pumvisible() && !g:CleverTab#cursor_moved && !g:CleverTab#stop
-    if !&omnifunc
+    if &omnifunc != ''
       echom "Omni Complete"
       let g:CleverTab#next_step_direction="N"
       let g:CleverTab#eat_next=1
