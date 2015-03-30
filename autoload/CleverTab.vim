@@ -69,8 +69,8 @@ function! CleverTab#Complete(type)
 
 
   elseif a:type == 'ultisnips' && !g:CleverTab#cursor_moved && !g:CleverTab#stop
-    let g:ulti_x = UltiSnips#ExpandSnippet()
-    if g:ulti_expand_res
+    let g:ulti_x = UltiSnips#ExpandSnippetOrJump()
+    if g:ulti_expand_or_jump_res
       echom "Ultisnips"
       let g:CleverTab#next_step_direction="0"
       let g:CleverTab#stop=1
