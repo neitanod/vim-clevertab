@@ -37,11 +37,19 @@ function! CleverTab#Complete(type)
 
 
   elseif a:type == 'omni' && !pumvisible() && !g:CleverTab#cursor_moved && !g:CleverTab#stop
-    if !&omnifunc
+    if &omnifunc != ''
       echom "Omni Complete"
       let g:CleverTab#next_step_direction="N"
       let g:CleverTab#eat_next=1
       return "\<C-X>\<C-O>"
+    endif
+
+  elseif a:type == 'user' && !pumvisible() && !g:CleverTab#cursor_moved && !g:CleverTab#stop
+    if &completefunc != ''
+      echom "User Complete"
+      let g:CleverTab#next_step_direction="N"
+      let g:CleverTab#eat_next=1
+      return "\<C-X>\<C-U>"
     endif
 
   elseif a:type == 'keyword' && !pumvisible() && !g:CleverTab#cursor_moved && !g:CleverTab#stop
@@ -64,8 +72,8 @@ function! CleverTab#Complete(type)
 
 
   elseif a:type == 'ultisnips' && !g:CleverTab#cursor_moved && !g:CleverTab#stop
-    let g:ulti_x = UltiSnips#ExpandSnippet()
-    if g:ulti_expand_res
+    let g:ulti_x = UltiSnips#ExpandSnippetOrJump()
+    if g:ulti_expand_or_jump_res
       echom "Ultisnips"
       let g:CleverTab#next_step_direction="0"
       let g:CleverTab#stop=1
@@ -87,7 +95,6 @@ function! CleverTab#Complete(type)
       let g:CleverTab#eat_next=0
       return ""
     endif
-    echom g:CleverTab#next_step_direction 
     if g:CleverTab#next_step_direction=="P"
       return "\<C-P>"
     elseif g:CleverTab#next_step_direction=="N"
@@ -113,6 +120,7 @@ function! CleverTab#OmniFirst()
                         \<c-r>=CleverTab#Complete('ultisnips')<cr>
                         \<c-r>=CleverTab#Complete('omni')<cr>
                         \<c-r>=CleverTab#Complete('keyword')<cr>
+                        \<c-r>=CleverTab#Complete('user')<cr>
                         \<c-r>=CleverTab#Complete('dictionary')<cr>
                         \<c-r>=CleverTab#Complete('stop')<cr>
   inoremap <silent><s-tab> <c-r>=CleverTab#Complete('prev')<cr>
@@ -123,6 +131,7 @@ function! CleverTab#KeywordFirst()
                         \<c-r>=CleverTab#Complete('tab')<cr>
                         \<c-r>=CleverTab#Complete('ultisnips')<cr>
                         \<c-r>=CleverTab#Complete('keyword')<cr>
+                        \<c-r>=CleverTab#Complete('user')<cr>
                         \<c-r>=CleverTab#Complete('dictionary')<cr>
                         \<c-r>=CleverTab#Complete('neocomplete')<cr>
                         \<c-r>=CleverTab#Complete('omni')<cr>
@@ -137,6 +146,7 @@ function! CleverTab#NeoCompleteFirst()
                         \<c-r>=CleverTab#Complete('neocomplete')<cr>
                         \<c-r>=CleverTab#Complete('keyword')<cr>
                         \<c-r>=CleverTab#Complete('omni')<cr>
+                        \<c-r>=CleverTab#Complete('user')<cr>
                         \<c-r>=CleverTab#Complete('dictionary')<cr>
                         \<c-r>=CleverTab#Complete('stop')<cr>
   inoremap <silent><s-tab> <c-r>=CleverTab#Complete('prev')<cr>
