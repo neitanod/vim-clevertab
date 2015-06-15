@@ -44,13 +44,17 @@ function! CleverTab#Complete(type)
       return "\<C-X>\<C-O>"
     endif
 
-
   elseif a:type == 'keyword' && !pumvisible() && !g:CleverTab#cursor_moved && !g:CleverTab#stop
     echom "Keyword Complete"
     let g:CleverTab#next_step_direction="P"
     let g:CleverTab#eat_next=1
     return "\<C-P>"
 
+  elseif a:type == 'dictionary' && !pumvisible() && !g:CleverTab#cursor_moved && !g:CleverTab#stop
+    echom "Dictionary Complete"
+    let g:CleverTab#next_step_direction="P"
+    let g:CleverTab#eat_next=1
+    return "\<C-X>\<C-K>"
 
   elseif a:type == 'neocomplete' && !pumvisible() && !g:CleverTab#cursor_moved && !g:CleverTab#stop
     echom "NeoComplete"
@@ -109,6 +113,7 @@ function! CleverTab#OmniFirst()
                         \<c-r>=CleverTab#Complete('ultisnips')<cr>
                         \<c-r>=CleverTab#Complete('omni')<cr>
                         \<c-r>=CleverTab#Complete('keyword')<cr>
+                        \<c-r>=CleverTab#Complete('dictionary')<cr>
                         \<c-r>=CleverTab#Complete('stop')<cr>
   inoremap <silent><s-tab> <c-r>=CleverTab#Complete('prev')<cr>
 endfunction
@@ -118,6 +123,7 @@ function! CleverTab#KeywordFirst()
                         \<c-r>=CleverTab#Complete('tab')<cr>
                         \<c-r>=CleverTab#Complete('ultisnips')<cr>
                         \<c-r>=CleverTab#Complete('keyword')<cr>
+                        \<c-r>=CleverTab#Complete('dictionary')<cr>
                         \<c-r>=CleverTab#Complete('neocomplete')<cr>
                         \<c-r>=CleverTab#Complete('omni')<cr>
                         \<c-r>=CleverTab#Complete('stop')<cr>
@@ -131,6 +137,7 @@ function! CleverTab#NeoCompleteFirst()
                         \<c-r>=CleverTab#Complete('neocomplete')<cr>
                         \<c-r>=CleverTab#Complete('keyword')<cr>
                         \<c-r>=CleverTab#Complete('omni')<cr>
+                        \<c-r>=CleverTab#Complete('dictionary')<cr>
                         \<c-r>=CleverTab#Complete('stop')<cr>
   inoremap <silent><s-tab> <c-r>=CleverTab#Complete('prev')<cr>
 endfunction
