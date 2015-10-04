@@ -70,6 +70,15 @@ function! CleverTab#Complete(type)
     let g:CleverTab#eat_next=1
     return neocomplete#start_manual_complete()
 
+  elseif a:type == 'neosnippet' && !g:CleverTab#cursor_moved && !g:CleverTab#stop
+    let g:neo_snip_x = neosnippet#mappings#expand_or_jump_impl()
+    if neosnippet#expandable_or_jumpable()
+      echom "NeoSnippet"
+      let g:CleverTab#next_step_direction="0"
+      let g:CleverTab#stop=1
+      return g:neo_snip_x
+    endif
+    return ""
 
   elseif a:type == 'ultisnips' && !g:CleverTab#cursor_moved && !g:CleverTab#stop
     let g:ulti_x = UltiSnips#ExpandSnippetOrJump()
