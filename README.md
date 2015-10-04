@@ -5,13 +5,13 @@ Tiny replacement for Supertab that DOES do what I need.
 
 If you're on a blank line or at the beginning of a line, it just 
 issues a TAB keypress.
-Otherwise, it calls UltiSnips. If no snippet was found, it calls the 
+Otherwise, it calls UltiSnips (or NeoSnippet). If no snippet was found, it calls the 
 NeoComplete plugin, omni complete and keyword complete one after the 
 other following the order you provided.
 If there are no matches it calls the following one.
 
 If you are already browsing a completion candidates list, tab will jump
-to the next one and shift-tab to the previos one.
+to the next one and shift-tab to the previous one.
 
 I did this because SuperTab did not detect if a completion returned 
 something or not, and in some cases I really needed to fall from a 
@@ -32,7 +32,7 @@ With Pathogen:
     cd ~/.vim/bundle/
     git clone https://github.com/neitanod/vim-clevertab.git
     
-Edit your .vimrc and then load one of the predefined chains, like this:
+Edit your .vimrc and then load one of the predefined chains (which try to call UltiSnips), like this:
    
     call CleverTab#KeywordFirst()
 
@@ -55,14 +55,25 @@ or define your own chain:
                           \<c-r>=CleverTab#Complete('stop')<cr>
     inoremap <silent><s-tab> <c-r>=CleverTab#Complete('prev')<cr>
 
+Here is a chain using NeoSnippet instead of UltiSnips:
+
+    inoremap <silent><tab> <c-r>=CleverTab#Complete('start')<cr>
+                          \<c-r>=CleverTab#Complete('tab')<cr>
+                          \<c-r>=CleverTab#Complete('neosnippet')<cr>
+                          \<c-r>=CleverTab#Complete('keyword')<cr>
+                          \<c-r>=CleverTab#Complete('omni')<cr>
+                          \<c-r>=CleverTab#Complete('neocomplete')<cr>
+                          \<c-r>=CleverTab#Complete('stop')<cr>
+    inoremap <silent><s-tab> <c-r>=CleverTab#Complete('prev')<cr>
+
 You must always start with CleverTab#Complete('start'), as it takes care
 of the bootstrap of the chain.
 
-Likewise, you must always end with CleverTab#Complete('end') wich takes
+Likewise, you must always end with CleverTab#Complete('end') which takes
 care of the cases where Tab means "next entry" on a suggestions menu.
 
 Between those two, you can define which functions and plugins to call, 
-and in wich order.  Each time that a function finds something to do 
+and in which order.  Each time that a function finds something to do 
 the chain is broken and the rest of the calls are ignored.
 
 Options:
@@ -98,8 +109,12 @@ Options:
     Works like the keyword and omni calls, but this one starts the 
     NeoComplete plugin to search for matches.  
 
+  - neosnippet
+
+    Starts the NeoSnippet plugin to search for matches.
+
 If you use a completion plugin other than NeoComplete and/or a snippets 
-plugin other than UltiSnips, I encourage you to hack into this plugin and 
+plugin other than UltiSnips or NeoSnippet, I encourage you to hack into this plugin and 
 add them yourself!  Each one is just an elseif block with just one to five 
 lines of code in it.  Then send me a pull request or just mail it to me.
 
