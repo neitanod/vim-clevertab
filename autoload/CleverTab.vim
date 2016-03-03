@@ -58,6 +58,12 @@ function! CleverTab#Complete(type)
     let g:CleverTab#eat_next=1
     return "\<C-P>"
 
+  elseif a:type == 'file' && !pumvisible() && !g:CleverTab#cursor_moved && !g:CleverTab#stop
+    echom "File Complete"
+    let g:CleverTab#next_step_direction="P"
+    let g:CleverTab#eat_next=1
+    return "\<C-X>\<C-F>"
+
   elseif a:type == 'dictionary' && !pumvisible() && !g:CleverTab#cursor_moved && !g:CleverTab#stop
     echom "Dictionary Complete"
     let g:CleverTab#next_step_direction="P"
@@ -130,6 +136,7 @@ function! CleverTab#OmniFirst()
                         \<c-r>=CleverTab#Complete('omni')<cr>
                         \<c-r>=CleverTab#Complete('keyword')<cr>
                         \<c-r>=CleverTab#Complete('user')<cr>
+                        \<c-r>=CleverTab#Complete('file')<cr>
                         \<c-r>=CleverTab#Complete('stop')<cr>
   inoremap <silent><s-tab> <c-r>=CleverTab#Complete('prev')<cr>
 endfunction
@@ -142,6 +149,7 @@ function! CleverTab#KeywordFirst()
                         \<c-r>=CleverTab#Complete('user')<cr>
                         \<c-r>=CleverTab#Complete('neocomplete')<cr>
                         \<c-r>=CleverTab#Complete('omni')<cr>
+                        \<c-r>=CleverTab#Complete('file')<cr>
                         \<c-r>=CleverTab#Complete('stop')<cr>
   inoremap <silent><s-tab> <c-r>=CleverTab#Complete('prev')<cr>
 endfunction
@@ -154,6 +162,7 @@ function! CleverTab#NeoCompleteFirst()
                         \<c-r>=CleverTab#Complete('keyword')<cr>
                         \<c-r>=CleverTab#Complete('omni')<cr>
                         \<c-r>=CleverTab#Complete('user')<cr>
+                        \<c-r>=CleverTab#Complete('file')<cr>
                         \<c-r>=CleverTab#Complete('stop')<cr>
   inoremap <silent><s-tab> <c-r>=CleverTab#Complete('prev')<cr>
 endfunction

@@ -104,6 +104,11 @@ Options:
     Completion function, the Omni Function is used by issuing a `<C-X><C-O>`
     key sequence press.
 
+  - file
+    
+    Issues a `<C-X><C-F>` to complete file names.
+
+
   - neocomplete
 
     Works like the keyword and omni calls, but this one starts the 
