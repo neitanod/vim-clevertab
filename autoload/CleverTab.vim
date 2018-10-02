@@ -97,6 +97,11 @@ function! CleverTab#Complete(type)
     let g:CleverTab#stop=1
     return "\<Tab>"
 
+  elseif a:type == 'emmet' && !g:CleverTab#cursor_moved && !g:CleverTab#stop
+    echom "Emmet"
+    let g:CleverTab#next_step_direction="0"
+    let g:CleverTab#stop=1
+    return emmet#expandAbbr(0, '')
 
   elseif a:type == "stop" || a:type == "next"
     if g:CleverTab#stop || g:CleverTab#eat_next==1
